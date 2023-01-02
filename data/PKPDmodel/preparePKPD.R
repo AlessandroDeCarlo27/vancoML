@@ -178,15 +178,24 @@ for (k in 1:length(keep_list)) {
 }
 
 
+
+
+
 nm_df <- rbindlist(nm_list)
 
 nm_df$SEX[nm_df$SEX=="M"] <- 1
 nm_df$SEX[nm_df$SEX=="F"] <- 0
 
+nm_df$AMT[nm_df$AMT==10000] <- 1000 #fixing some wrong dosages
+
+nm_df <- nm_df[nm_df$DV!=150.4,] #dumb way to remove one outlier meas
+
 write.table(nm_df,"dataset_no_covs.csv",quote=F,sep=",",
             row.names = F)
 
 mx_df <- nm_df %>% rename(Y=DV)
+
+
 
 write.table(mx_df,"dataset_mx.csv",quote=F,sep=",",
             row.names = F)

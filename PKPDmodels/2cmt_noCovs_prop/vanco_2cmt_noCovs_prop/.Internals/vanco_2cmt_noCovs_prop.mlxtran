@@ -1,0 +1,89 @@
+<DATAFILE>
+
+[FILEINFO]
+file='../../../../data/PKPDmodel/dataset_mx.csv'
+delimiter = comma
+header = {C, ID, TIME, Y, MDV, EVID, AMT, RATE, AnionGap, BUN, Ca, Chloride, Creatinine, Glucose, HCO3, HCT, Hb, P, PLT, K, Na, WBC, LacticAcid, HR, Temperature, AGE, SEX, WT}
+
+[CONTENT]
+ID = {use=identifier}
+TIME = {use=time}
+Y = {use=observation, name=Y, type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+AnionGap = {use=covariate, type=continuous}
+BUN = {use=covariate, type=continuous}
+Ca = {use=covariate, type=continuous}
+Chloride = {use=covariate, type=continuous}
+Creatinine = {use=covariate, type=continuous}
+Glucose = {use=covariate, type=continuous}
+HCO3 = {use=covariate, type=continuous}
+HCT = {use=covariate, type=continuous}
+Hb = {use=covariate, type=continuous}
+P = {use=covariate, type=continuous}
+PLT = {use=covariate, type=continuous}
+K = {use=covariate, type=continuous}
+Na = {use=covariate, type=continuous}
+WBC = {use=covariate, type=continuous}
+LacticAcid = {use=covariate, type=continuous}
+HR = {use=covariate, type=continuous}
+Temperature = {use=covariate, type=continuous}
+AGE = {use=covariate, type=continuous}
+SEX = {use=covariate, type=categorical}
+WT = {use=covariate, type=continuous}
+
+<MODEL>
+
+[COVARIATE]
+input = {AGE, WT, SEX, AnionGap, BUN, Ca, Chloride, Creatinine, Glucose, HCO3, HCT, HR, Hb, K, LacticAcid, Na, P, PLT, Temperature, WBC}
+
+SEX = {type=categorical, categories={0, 1}}
+
+[INDIVIDUAL]
+input = {Cl_pop, omega_Cl, Q_pop, omega_Q, V1_pop, omega_V1, V2_pop, omega_V2}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, sd=omega_Cl}
+Q = {distribution=logNormal, typical=Q_pop, sd=omega_Q}
+V1 = {distribution=logNormal, typical=V1_pop, sd=omega_V1}
+V2 = {distribution=logNormal, typical=V2_pop, sd=omega_V2}
+
+[LONGITUDINAL]
+input = {b}
+
+file = 'lib:infusion_2cpt_ClV1QV2.txt'
+
+DEFINITION:
+Y = {distribution=normal, prediction=Cc, errorModel=proportional(b)}
+
+<FIT>
+data = Y
+model = Y
+
+<PARAMETER>
+Cl_pop = {value=0.5, method=MLE}
+Q_pop = {value=1, method=MLE}
+V1_pop = {value=1, method=MLE}
+V2_pop = {value=1, method=MLE}
+b = {value=0.3, method=MLE}
+c = {value=1, method=FIXED}
+omega_Cl = {value=1, method=MLE}
+omega_Q = {value=1, method=MLE}
+omega_V1 = {value=1, method=MLE}
+omega_V2 = {value=1, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(method = StochasticApproximation)
+logLikelihood(method = ImportanceSampling)
+plotResult(method = {indfits, parameterdistribution, covariancemodeldiagnosis, covariatemodeldiagnosis, obspred, vpc, residualsscatter, residualsdistribution, randomeffects, saemresults })
+
+[SETTINGS]
+GLOBAL:
+exportpath = '../'
+

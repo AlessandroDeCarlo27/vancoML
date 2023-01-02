@@ -1,0 +1,104 @@
+********************************************************************************
+*                        vanco_1cmt_noCovs_comb.mlxtran                        *
+*                         at                                                   *
+*                        Monolix version : 2021R1                              *
+********************************************************************************
+
+
+ESTIMATION OF THE POPULATION PARAMETERS ________________________________________
+
+Fixed Effects ----------------------------     se_sa    rse(%)
+V_pop    :                              83      2.99       3.6
+Cl_pop   :                            1.68     0.075      4.45
+
+Standard Deviation of the Random Effects -
+omega_V  :                           0.624    0.0274      4.39
+omega_Cl :                           0.872    0.0316      3.62
+
+Error Model Parameters -------------------
+a        :                            3.33     0.256      7.67
+b        :                         0.00916    0.0131       143
+
+Elapsed time (seconds):       76
+Exploratory phase iterations:      204 (Autostop)
+Smoothing phase iterations:         86 (Autostop)
+
+ _______________________________________________________________________________
+
+
+
+ESTIMATION OF THE INDIVIDUAL PARAMETERS ________________________________________
+
+
+Estimation of the individual parameters by Conditional Distribution ------------
+           min        Q1    median        Q3       max
+V  :      14.4        68      88.4       107       322
+Cl :     0.124       1.1      1.69      2.57      9.58
+
+Elapsed time (seconds):       18
+Iterations:       80 (Autostop)
+
+ -------------------------------------------------------------------------------
+
+
+Estimation of the individual parameters by Conditional Mode --------------------
+           min        Q1    median        Q3       max
+V  :      14.4      62.7      78.4      91.2       321
+Cl :     0.136      1.26      1.93       3.1      11.1
+
+Elapsed time (seconds):      2.6
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+ESTIMATION OF THE FISHER INFORMATION MATRIX ____________________________________
+
+
+Estimation of the Fisher information matrix by Stochastic Approximation --------
+
+Correlation Matrix :
+   V_pop         1
+  Cl_pop   -0.4644         1
+ omega_V    0.2289  -0.23801         1
+omega_Cl   0.10999  -0.24412  -0.23469         1
+       a   0.12279   0.16116  0.052444  -0.10776         1
+       b -0.061037  -0.17123 -0.094046  0.096691  -0.88138         1
+
+                               min       max   max/min
+Eigen values           :      0.11         2        18
+
+Elapsed time (seconds):      3.7
+Iterations:       50 (Autostop)
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+ESTIMATION OF THE LOG-LIKELIHOOD _______________________________________________
+
+                                                            (is)
+-2 x log-likelihood                       (OFV) :       11126.79
+Akaike Information Criteria               (AIC) :       11138.79
+Corrected Bayesian Information Criteria  (BICc) :       11170.08
+Bayesian Information Criteria             (BIC) :       11168.26
+
+Elapsed time                          (seconds) :         229.31
+CPU time                              (seconds) :         229.00
+MonteCarlo size (is):    10000 (Fixed number of iterations)
+
+
+[Importance Sampling] Standard error        : 0.539
+                      Sampling distribution : T-distribution with 5 degrees of freedom
+
+ _______________________________________________________________________________
+
+DATASET INFORMATION
+Number of individuals: 1004
+Number of observations (Y): 1582
+Number of doses: 3911
+
