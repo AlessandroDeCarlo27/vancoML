@@ -19,9 +19,9 @@ eta_V,PLT,-0.759845,0.447526,Pearson
 eta_V,Temperature,0.492926,0.622173,Pearson
 eta_V,WBC,-0.448843,0.653642,Pearson
 eta_V,WT,1.59622,0.110756,Pearson
-eta_V,logtAGE,-0.386036,0.699552,Pearson
-eta_V,logtCreatinine,-6.11614,1.37249e-09,Pearson
-eta_V,logtWT,0.323606,0.746304,Pearson
+eta_V,logAGE,-0.386036,0.699552,Pearson
+eta_V,logCR,-6.11614,1.37249e-09,Pearson
+eta_V,logWT,0.323606,0.746304,Pearson
 eta_Cl,SEX,0.526592,0.468213,Anova
 eta_Cl,AGE,0.00631895,0.994959,Pearson
 eta_Cl,AnionGap,-0.984376,0.325168,Pearson
@@ -42,6 +42,6 @@ eta_Cl,PLT,-1.30015,0.193848,Pearson
 eta_Cl,Temperature,1.73088,0.0837805,Pearson
 eta_Cl,WBC,-1.1224,0.261961,Pearson
 eta_Cl,WT,5.08378,4.41372e-07,Pearson
-eta_Cl,logtAGE,0.382095,0.702472,Pearson
-eta_Cl,logtCreatinine,0.453877,0.650016,Pearson
-eta_Cl,logtWT,4.7343,2.51428e-06,Pearson
+eta_Cl,logAGE,0.382095,0.702472,Pearson
+eta_Cl,logCR,0.453877,0.650016,Pearson
+eta_Cl,logWT,4.7343,2.51428e-06,Pearson

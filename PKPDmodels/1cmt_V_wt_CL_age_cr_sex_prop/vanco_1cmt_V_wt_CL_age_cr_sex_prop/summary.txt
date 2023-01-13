@@ -1,6 +1,6 @@
 ********************************************************************************
 *                  vanco_1cmt_V_wt_CL_age_cr_sex_prop.mlxtran                  *
-*                   at                                                         *
+*                  January 13, 2023 at 13:05:20                                *
 *                  Monolix version : 2021R1                                    *
 ********************************************************************************
 
@@ -8,21 +8,21 @@
 ESTIMATION OF THE POPULATION PARAMETERS ________________________________________
 
 Fixed Effects ----------------------------     se_sa    rse(%)
-V_pop                  :              75.9      2.26      2.97
-beta_V_logtWT          :             0.562    0.0645      11.5
-Cl_pop                 :              1.23    0.0651      5.28
-beta_Cl_SEX_1          :             0.477    0.0601      12.6
-beta_Cl_logtAGE        :            -0.881    0.0927      10.5
-beta_Cl_logtCreatinine :            -0.851     0.053      6.22
+V_pop          :                      6.51      1.84      28.3
+beta_V_logWT   :                     0.562    0.0645      11.5
+Cl_pop         :                      52.5        20        38
+beta_Cl_SEX_1  :                     0.477    0.0601      12.6
+beta_Cl_logAGE :                    -0.881    0.0927      10.5
+beta_Cl_logCR  :                    -0.851     0.053      6.22
 
 Standard Deviation of the Random Effects -
-omega_V                :             0.527    0.0217      4.12
-omega_Cl               :             0.663    0.0231      3.49
+omega_V        :                     0.527    0.0217      4.12
+omega_Cl       :                     0.663    0.0231      3.49
 
 Error Model Parameters -------------------
-b                      :             0.208   0.00679      3.27
+b              :                     0.208   0.00679      3.27
 
-Elapsed time (seconds):  1.1e+02
+Elapsed time (seconds):       85
 Exploratory phase iterations:      209 (Autostop)
 Smoothing phase iterations:        105 (Autostop)
 
@@ -38,7 +38,7 @@ Estimation of the individual parameters by Conditional Distribution ------------
 V  :      6.95      60.1      76.5        96       242
 Cl :     0.143     0.955      1.62      2.81      12.2
 
-Elapsed time (seconds):       16
+Elapsed time (seconds):       18
 Iterations:       68 (Autostop)
 
  -------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ Estimation of the individual parameters by Conditional Mode --------------------
 V  :      5.45      58.8      72.1      90.4       371
 Cl :     0.152      1.08      1.93      3.43      12.3
 
-Elapsed time (seconds):        3
+Elapsed time (seconds):      2.7
 
  -------------------------------------------------------------------------------
 
@@ -63,20 +63,20 @@ ESTIMATION OF THE FISHER INFORMATION MATRIX ____________________________________
 Estimation of the Fisher information matrix by Stochastic Approximation --------
 
 Correlation Matrix :
-                 V_pop         1
-         beta_V_logtWT  0.022187         1
-                Cl_pop  -0.37872  -0.01383         1
-       beta_Cl_logtAGE  -0.10192  0.034739  0.061049         1
-beta_Cl_logtCreatinine  -0.19527  -0.03038    0.3935  -0.10985         1
-         beta_Cl_SEX_1  0.089115 -0.037442  -0.763280.00092598  -0.28663         1
-               omega_V   0.11986 0.0063065 -0.075213    0.0118  0.053445 -0.030608         1
-              omega_Cl   0.15765 -0.079346  -0.18467 -0.070509  -0.10375  0.039623   -0.1533         1
-                     b   0.10732  0.047849   -0.1037  -0.01581 -0.066687  0.044177  -0.13256 -0.067998         1
+         V_pop         1
+  beta_V_logWT  -0.99448         1
+        Cl_pop    0.0416 -0.036071         1
+beta_Cl_logAGE -0.045323  0.034739  -0.99132         1
+ beta_Cl_logCR 0.0097948  -0.03038   0.14282  -0.10985         1
+ beta_Cl_SEX_1  0.046673 -0.037442  -0.100730.00092598  -0.28663         1
+       omega_V 0.0062896 0.0063065 -0.023456    0.0118  0.053445 -0.030608         1
+      omega_Cl  0.095635 -0.079346  0.047275 -0.070509  -0.10375  0.039623   -0.1533         1
+             b -0.036436  0.047849 0.0028964  -0.01581 -0.066687  0.044177  -0.13256 -0.067998         1
 
                                min       max   max/min
-Eigen values           :      0.16       2.2        13
+Eigen values           :    0.0022       2.1   9.4e+02
 
-Elapsed time (seconds):      9.8
+Elapsed time (seconds):      3.8
 Iterations:       50 (Autostop)
 
  -------------------------------------------------------------------------------
@@ -93,8 +93,8 @@ Akaike Information Criteria               (AIC) :       10801.35
 Corrected Bayesian Information Criteria  (BICc) :       10846.92
 Bayesian Information Criteria             (BIC) :       10845.56
 
-Elapsed time                          (seconds) :         272.24
-CPU time                              (seconds) :         272.00
+Elapsed time                          (seconds) :         232.96
+CPU time                              (seconds) :         232.00
 MonteCarlo size (is):    10000 (Fixed number of iterations)
 
 

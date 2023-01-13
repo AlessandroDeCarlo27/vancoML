@@ -1,5 +1,5 @@
 parameter,covariate,statistics,p-value,test
-V,beta_V_logtWT,19.9793,<2.2e-16,t-Test
+V,beta_V_logWT,19.9793,<2.2e-16,t-Test
 Cl,beta_Cl_SEX_1,14.9563,<2.2e-16,t-Test
-Cl,beta_Cl_logtAGE,-13.3885,<2.2e-16,t-Test
-Cl,beta_Cl_logtCreatinine,-29.3568,<2.2e-16,t-Test
+Cl,beta_Cl_logAGE,-13.3885,<2.2e-16,t-Test
+Cl,beta_Cl_logCR,-29.3568,<2.2e-16,t-Test

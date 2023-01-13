@@ -42,18 +42,18 @@ input = {AGE, AnionGap, BUN, Ca, Chloride, Creatinine, Glucose, HCO3, HCT, HR, H
 SEX = {type=categorical, categories={0, 1}}
 
 EQUATION:
-logtWT = log(WT/79.5076)
-logtAGE = log(AGE/60.8604)
-logtCreatinine = log(Creatinine/1.17091)
+logAGE = log(AGE)
+logCR = log(Creatinine)
+logWT = log(WT)
 
 [INDIVIDUAL]
-input = {Cl_pop, omega_Cl, V_pop, omega_V, logtWT, beta_V_logtWT, SEX, beta_Cl_SEX_1, logtAGE, beta_Cl_logtAGE, logtCreatinine, beta_Cl_logtCreatinine}
+input = {Cl_pop, omega_Cl, V_pop, omega_V, SEX, beta_Cl_SEX_1, logAGE, beta_Cl_logAGE, logCR, beta_Cl_logCR, logWT, beta_V_logWT}
 
 SEX = {type=categorical, categories={0, 1}}
 
 DEFINITION:
-Cl = {distribution=logNormal, typical=Cl_pop, covariate={SEX, logtAGE, logtCreatinine}, coefficient={{0, beta_Cl_SEX_1}, beta_Cl_logtAGE, beta_Cl_logtCreatinine}, sd=omega_Cl}
-V = {distribution=logNormal, typical=V_pop, covariate=logtWT, coefficient=beta_V_logtWT, sd=omega_V}
+Cl = {distribution=logNormal, typical=Cl_pop, covariate={SEX, logAGE, logCR}, coefficient={{0, beta_Cl_SEX_1}, beta_Cl_logAGE, beta_Cl_logCR}, sd=omega_Cl}
+V = {distribution=logNormal, typical=V_pop, covariate=logWT, coefficient=beta_V_logWT, sd=omega_V}
 
 [LONGITUDINAL]
 input = {b}
@@ -72,9 +72,9 @@ Cl_pop = {value=0.5, method=MLE}
 V_pop = {value=1, method=MLE}
 b = {value=0.3, method=MLE}
 beta_Cl_SEX_1 = {value=0, method=MLE}
-beta_Cl_logtAGE = {value=0, method=MLE}
-beta_Cl_logtCreatinine = {value=0, method=MLE}
-beta_V_logtWT = {value=0, method=MLE}
+beta_Cl_logAGE = {value=0, method=MLE}
+beta_Cl_logCR = {value=0, method=MLE}
+beta_V_logWT = {value=0, method=MLE}
 c = {value=1, method=FIXED}
 omega_Cl = {value=1, method=MLE}
 omega_V = {value=1, method=MLE}
