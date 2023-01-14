@@ -1,5 +1,5 @@
 parameter,statistics(sa),p-value(sa)
-beta_V_logWT,6.8427,7.77e-12
-beta_Cl_logAGE,8.74042,<2.2e-16
-beta_Cl_logCR,16.379,<2.2e-16
+beta_V_logtWT,6.8427,7.77e-12
+beta_Cl_logtAGE,8.74042,<2.2e-16
+beta_Cl_logtCreatinine,16.379,<2.2e-16
 beta_Cl_SEX_1,8.26489,2.22e-16
