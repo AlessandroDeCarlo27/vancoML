@@ -193,7 +193,7 @@ nm_df <- nm_df[nm_df$DV!=150.4,] #dumb way to remove one outlier meas
 write.table(nm_df,"dataset_no_covs.csv",quote=F,sep=",",
             row.names = F)
 
-mx_df <- nm_df %>% rename(Y=DV)
+mx_df <- nm_df %>% rename(Y=DV) %>% filter(WT>1)
 
 
 
