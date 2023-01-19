@@ -1,6 +1,0 @@
-parameter,covariate,statistics,p-value,test
-V,beta_V_SEX_1,2.17183,0.0301028,t-Test
-V,beta_V_logtWT,12.0155,<2.2e-16,t-Test
-Cl,beta_Cl_SEX_1,4.91473,1.0384e-06,t-Test
-Cl,beta_Cl_logtAGE,-15.353,<2.2e-16,t-Test
-Cl,beta_Cl_logtWT,2.80897,0.00506681,t-Test

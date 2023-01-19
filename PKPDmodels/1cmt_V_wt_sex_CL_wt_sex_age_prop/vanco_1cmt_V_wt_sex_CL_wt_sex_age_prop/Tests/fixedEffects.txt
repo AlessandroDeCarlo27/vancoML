@@ -1,6 +1,0 @@
-parameter,statistics(sa),p-value(sa)
-beta_V_logtWT,4.84215,1.28e-06
-beta_V_SEX_1,1.00271,0.316
-beta_Cl_logtAGE,10.4257,<2.2e-16
-beta_Cl_logtWT,1.62935,0.103
-beta_Cl_SEX_1,2.8147,0.00488

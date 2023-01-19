@@ -1,4 +1,0 @@
-parameter,covariate,statistics,p-value,test
-V,beta_V_logtWT,18.6728,<2.2e-16,t-Test
-Cl,beta_Cl_logtAGE,-13.8194,<2.2e-16,t-Test
-Cl,beta_Cl_logtCreatinine,-23.4501,<2.2e-16,t-Test
