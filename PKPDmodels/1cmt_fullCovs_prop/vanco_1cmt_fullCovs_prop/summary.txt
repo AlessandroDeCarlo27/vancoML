@@ -1,0 +1,132 @@
+********************************************************************************
+*                       vanco_1cmt_fullCovs_prop.mlxtran                       *
+*                       January 20, 2023 at 12:16:00                           *
+*                       Monolix version : 2021R1                               *
+********************************************************************************
+
+
+ESTIMATION OF THE POPULATION PARAMETERS ________________________________________
+
+Fixed Effects ----------------------------     se_sa    rse(%)
+V_pop                  :              77.7      3.48      4.48
+beta_V_SEX_1           :           -0.0661    0.0574      86.7
+beta_V_logtHCT         :            0.0661     0.436       660
+beta_V_logtHb          :              0.35     0.433       124
+beta_V_logtWT          :             0.626     0.085      13.6
+Cl_pop                 :              1.33    0.0709      5.32
+beta_Cl_SEX_1          :             0.384    0.0629      16.4
+beta_Cl_logtAGE        :            -0.749    0.0912      12.2
+beta_Cl_logtAnionGap   :            -0.173     0.123      71.3
+beta_Cl_logtBUN        :            -0.259    0.0577      22.3
+beta_Cl_logtCreatinine :            -0.585    0.0703        12
+beta_Cl_logtHCO3       :             0.211     0.137      64.7
+beta_Cl_logtHCT        :             -1.36     0.525      38.7
+beta_Cl_logtHb         :              2.01     0.509      25.3
+beta_Cl_logtK          :             0.504     0.174      34.6
+beta_Cl_logtLacticAcid :           0.00975    0.0521       535
+beta_Cl_logtP          :            -0.171     0.079      46.1
+
+Standard Deviation of the Random Effects -
+omega_V                :             0.506    0.0214      4.23
+omega_Cl               :             0.608    0.0216      3.56
+
+Error Model Parameters -------------------
+b                      :              0.21   0.00674      3.22
+
+Elapsed time (seconds):       92
+Exploratory phase iterations:      225 (Autostop)
+Smoothing phase iterations:         92 (Autostop)
+
+ _______________________________________________________________________________
+
+
+
+ESTIMATION OF THE INDIVIDUAL PARAMETERS ________________________________________
+
+
+Estimation of the individual parameters by Conditional Distribution ------------
+           min        Q1    median        Q3       max
+V  :      15.8      59.7      76.6      93.3       248
+Cl :     0.133     0.968      1.71      2.89      12.1
+
+Elapsed time (seconds):       19
+Iterations:       74 (Autostop)
+
+ -------------------------------------------------------------------------------
+
+
+Estimation of the individual parameters by Conditional Mode --------------------
+           min        Q1    median        Q3       max
+V  :      15.6      57.9      71.1      91.3       345
+Cl :     0.158      1.08      1.96      3.44      11.9
+
+Elapsed time (seconds):        3
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+ESTIMATION OF THE FISHER INFORMATION MATRIX ____________________________________
+
+
+Estimation of the Fisher information matrix by Stochastic Approximation --------
+
+Correlation Matrix :
+                 V_pop         1
+        beta_V_logtHCT  -0.06766         1
+         beta_V_logtHb   0.10701   -0.9503         1
+         beta_V_logtWT   0.08497 -0.018169 -0.038747         1
+          beta_V_SEX_1  -0.74986  0.028132 -0.060179  -0.19388         1
+                Cl_pop  -0.47913-0.00085481-0.0076044 -0.014995    0.3106         1
+       beta_Cl_logtAGE  -0.06832  0.041112 -0.038192   0.05878  0.011219  0.055019         1
+  beta_Cl_logtAnionGap -0.036393   0.04017 -0.040795 -0.033544 0.0050168  0.011211-0.0096336         1
+       beta_Cl_logtBUN -0.049116  0.046287 -0.050727  0.062263 -0.017072  0.039795  -0.26152  0.011499         1
+beta_Cl_logtCreatinine -0.082233 -0.028381  0.042566 -0.061755  0.044485     0.259  0.067363  -0.17814   -0.5869         1
+      beta_Cl_logtHCO3  0.019487 -0.028519  0.034251 -0.091798  0.019824  0.024367  -0.02175   0.34167  -0.20074   0.18961         1
+       beta_Cl_logtHCT-0.0067558  -0.38463   0.36498 -0.007381 0.0032979  0.015083   -0.1335  -0.10948  0.019565  0.014691  -0.07051         1
+        beta_Cl_logtHb-0.0027812   0.37427  -0.38939  0.013334 0.0071562 0.0034633   0.11404  0.095123  0.019421 -0.044138  0.063053  -0.95786         1
+         beta_Cl_logtK-0.0061052  0.022349 -0.020611 -0.020981  0.025985  0.032821  0.011946    0.1037  -0.10889 -0.058956   0.01966  -0.13587   0.11336         1
+beta_Cl_logtLacticAcid  0.014316 -0.010051  0.010467 0.0091557 -0.022523 -0.019082  0.055622  -0.29279 -0.019333 -0.026257    0.1837 -0.054494  0.023151-0.0038513         1
+         beta_Cl_logtP -0.002015-0.00046183-0.0038033-0.0015062 -0.011664 -0.025827  0.042609  -0.13476  -0.10163  -0.11708-0.0014074 -0.046724  0.061812  -0.31557 -0.036095         1
+         beta_Cl_SEX_1   0.35812 0.0014556 0.0074585  0.015074  -0.39917  -0.79083 -0.018051  0.042372  0.041973  -0.25234 -0.081056  0.031594 -0.059513 -0.075394  0.025383  0.074113         1
+               omega_V  0.069536 0.0034243 0.0082707  0.030819  0.008792 -0.077661 -0.008521-0.00043481-0.0096708  0.042518  0.021269 -0.020769  0.014563-0.0085691 -0.032492 0.0087351 -0.025716         1
+              omega_Cl  0.085972 -0.051228  0.054827  -0.10902  0.025311  -0.15549 -0.052052 -0.034968 -0.043687 -0.042379  0.015982  0.032269 -0.031304-0.0045894  0.026704 -0.013452  0.026218  -0.16403         1
+                     b  0.085967 -0.017703  0.015897 0.0076345 -0.011648  -0.10274 -0.012242 -0.021811 -0.022506  -0.03347 0.0097604 0.0086609-0.0070004 0.0047238 0.0067252-0.00038173   0.03407  -0.10314 -0.078576         1
+
+                               min       max   max/min
+Eigen values           :     0.026       2.8   1.1e+02
+
+Elapsed time (seconds):      4.6
+Iterations:       50 (Autostop)
+
+ -------------------------------------------------------------------------------
+
+ _______________________________________________________________________________
+
+
+
+ESTIMATION OF THE LOG-LIKELIHOOD _______________________________________________
+
+                                                            (is)
+-2 x log-likelihood                       (OFV) :       10623.67
+Akaike Information Criteria               (AIC) :       10663.67
+Corrected Bayesian Information Criteria  (BICc) :       10763.20
+Bayesian Information Criteria             (BIC) :       10761.84
+
+Elapsed time                          (seconds) :         237.94
+CPU time                              (seconds) :         237.00
+MonteCarlo size (is):    10000 (Fixed number of iterations)
+
+
+[Importance Sampling] Standard error        : 0.480
+                      Sampling distribution : T-distribution with 5 degrees of freedom
+
+ _______________________________________________________________________________
+
+DATASET INFORMATION
+Number of individuals: 1001
+Number of observations (Y): 1577
+Number of doses: 3898
+

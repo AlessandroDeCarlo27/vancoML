@@ -1,0 +1,11 @@
+parameter,statistics(sa),p-value(sa)
+beta_V_logtHb,2.82166,0.00478
+beta_V_logtWT,6.85348,7.21e-12
+beta_Cl_logtAGE,8.0964,6.66e-16
+beta_Cl_logtBUN,4.90925,9.14e-07
+beta_Cl_logtCreatinine,8.86329,<2.2e-16
+beta_Cl_logtHCO3,2.65989,0.00782
+beta_Cl_logtHCT,2.97895,0.00289
+beta_Cl_logtHb,4.48149,7.41e-06
+beta_Cl_logtK,2.3708,0.0177
+beta_Cl_SEX_1,6.32229,2.58e-10

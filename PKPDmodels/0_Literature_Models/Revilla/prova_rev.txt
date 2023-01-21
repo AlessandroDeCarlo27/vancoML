@@ -1,0 +1,28 @@
+DESCRIPTION:
+The administration is via an infusion (requires INFUSION RATE or INFUSION DURATION column-type in the data set).
+The PK model has one compartment (volume V) and a linear elimination (clearance Cl).
+
+[LONGITUDINAL]
+input = {V,Cl,Vpop,Clpop,thetaAge,thetaCr,AGE,CrCl,CrBin}
+
+AGE = {use=regressor}
+CrCl = {use=regressor}
+CrBin = {use=regressor}
+
+
+PK:
+depot(target=Q)
+
+EQUATION:
+TV = Vpop*(thetaCr^CrBin)
+TCL = Clpop*CrCl+(AGE^thetaAge)
+Cl2 = TCL*exp(Cl)*60/1000
+Vol = TV*exp(V)
+t_0 = 0
+Q_0 = 0
+ddt_Q = (-Cl2/Vol)*Q
+
+Cc = Q/Vol
+
+OUTPUT:
+output = Cc

@@ -1,0 +1,5 @@
+eta,covariate,statistics,p-value,test
+eta_V,SEX,0.229241,0.632192,Anova
+eta_V,WT,-5.80739,8.52096e-09,Pearson
+eta_Cl,SEX,9.06459,0.00267158,Anova
+eta_Cl,WT,-4.57608,5.33323e-06,Pearson

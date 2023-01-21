@@ -1,0 +1,113 @@
+<DATAFILE>
+
+[FILEINFO]
+file='../../data/PKPDmodel/dataset_mx.csv'
+delimiter = comma
+header = {C, ID, TIME, Y, MDV, EVID, AMT, RATE, AnionGap, BUN, Ca, Chloride, Creatinine, Glucose, HCO3, HCT, Hb, P, PLT, K, Na, WBC, LacticAcid, HR, Temperature, AGE, SEX, WT}
+
+[CONTENT]
+ID = {use=identifier}
+TIME = {use=time}
+Y = {use=observation, name=Y, type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+AnionGap = {use=covariate, type=continuous}
+BUN = {use=covariate, type=continuous}
+Ca = {use=covariate, type=continuous}
+Chloride = {use=covariate, type=continuous}
+Creatinine = {use=covariate, type=continuous}
+Glucose = {use=covariate, type=continuous}
+HCO3 = {use=covariate, type=continuous}
+HCT = {use=covariate, type=continuous}
+Hb = {use=covariate, type=continuous}
+P = {use=covariate, type=continuous}
+PLT = {use=covariate, type=continuous}
+K = {use=covariate, type=continuous}
+Na = {use=covariate, type=continuous}
+WBC = {use=covariate, type=continuous}
+LacticAcid = {use=covariate, type=continuous}
+HR = {use=covariate, type=continuous}
+Temperature = {use=covariate, type=continuous}
+AGE = {use=covariate, type=continuous}
+SEX = {use=covariate, type=categorical}
+WT = {use=covariate, type=continuous}
+
+<MODEL>
+
+[COVARIATE]
+input = {AGE, AnionGap, BUN, Ca, Chloride, Creatinine, Glucose, HCO3, HCT, HR, Hb, K, LacticAcid, Na, P, PLT, Temperature, WBC, WT, SEX}
+
+SEX = {type=categorical, categories={0, 1}}
+
+EQUATION:
+logtAGE = log(AGE/60.8604)
+logtAnionGap = log(AnionGap/14.7974)
+logtCreatinine = log(Creatinine/1.17091)
+logtGlucose = log(Glucose/137.953)
+logtHCO3 = log(HCO3/20.9539)
+logtHCT = log(HCT/31.2064)
+logtHb = log(Hb/10.0904)
+logtK = log(K/4.11515)
+logtLacticAcid = log(LacticAcid/2.01897)
+logtP = log(P/3.55066)
+logtWT = log(WT/79.5076)
+logtBUN = log(BUN/26.3069)
+
+[INDIVIDUAL]
+input = {Cl_pop, omega_Cl, V_pop, omega_V, SEX, beta_Cl_SEX_1, logtAGE, beta_Cl_logtAGE, logtAnionGap, beta_Cl_logtAnionGap, logtCreatinine, beta_Cl_logtCreatinine, logtHCT, beta_V_logtHCT, beta_Cl_logtHCT, logtHb, beta_Cl_logtHb, logtK, beta_Cl_logtK, logtP, beta_Cl_logtP, logtWT, beta_V_logtWT, beta_V_logtHb, logtBUN, beta_Cl_logtBUN, logtHCO3, beta_Cl_logtHCO3, beta_V_SEX_1}
+
+SEX = {type=categorical, categories={0, 1}}
+
+DEFINITION:
+Cl = {distribution=logNormal, typical=Cl_pop, covariate={SEX, logtAGE, logtAnionGap, logtCreatinine, logtHCT, logtHb, logtK, logtP, logtBUN, logtHCO3}, coefficient={{0, beta_Cl_SEX_1}, beta_Cl_logtAGE, beta_Cl_logtAnionGap, beta_Cl_logtCreatinine, beta_Cl_logtHCT, beta_Cl_logtHb, beta_Cl_logtK, beta_Cl_logtP, beta_Cl_logtBUN, beta_Cl_logtHCO3}, sd=omega_Cl}
+V = {distribution=logNormal, typical=V_pop, covariate={logtHCT, logtWT, logtHb, SEX}, coefficient={beta_V_logtHCT, beta_V_logtWT, beta_V_logtHb, {0, beta_V_SEX_1}}, sd=omega_V}
+
+[LONGITUDINAL]
+input = {b}
+
+file = 'lib:infusion_1cpt_VCl.txt'
+
+DEFINITION:
+Y = {distribution=normal, prediction=Cc, errorModel=proportional(b)}
+
+<FIT>
+data = Y
+model = Y
+
+<PARAMETER>
+Cl_pop = {value=0.5, method=MLE}
+V_pop = {value=1, method=MLE}
+b = {value=0.3, method=MLE}
+beta_Cl_SEX_1 = {value=0, method=MLE}
+beta_Cl_logtAGE = {value=0, method=MLE}
+beta_Cl_logtAnionGap = {value=0, method=MLE}
+beta_Cl_logtBUN = {value=0, method=MLE}
+beta_Cl_logtCreatinine = {value=0, method=MLE}
+beta_Cl_logtHCO3 = {value=0, method=MLE}
+beta_Cl_logtHCT = {value=0, method=MLE}
+beta_Cl_logtHb = {value=0, method=MLE}
+beta_Cl_logtK = {value=0, method=MLE}
+beta_Cl_logtP = {value=0, method=MLE}
+beta_V_SEX_1 = {value=0, method=MLE}
+beta_V_logtHCT = {value=0, method=MLE}
+beta_V_logtHb = {value=0, method=MLE}
+beta_V_logtWT = {value=0, method=MLE}
+c = {value=1, method=FIXED}
+omega_Cl = {value=1, method=MLE}
+omega_V = {value=1, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(method = StochasticApproximation)
+logLikelihood(method = ImportanceSampling)
+plotResult(run = false,method = {indfits, parameterdistribution, covariancemodeldiagnosis, covariatemodeldiagnosis, obspred, vpc, residualsscatter, residualsdistribution, randomeffects, saemresults })
+
+[SETTINGS]
+GLOBAL:
+exportpath = 'vanco_1cmt_fullCovs_NO_LAcl_prop'
+

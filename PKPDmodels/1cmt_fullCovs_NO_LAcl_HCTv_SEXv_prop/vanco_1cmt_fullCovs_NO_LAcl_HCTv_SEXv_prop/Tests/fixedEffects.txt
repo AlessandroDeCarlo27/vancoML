@@ -1,0 +1,13 @@
+parameter,statistics(sa),p-value(sa)
+beta_V_logtHb,2.92641,0.00343
+beta_V_logtWT,7.30711,2.73e-13
+beta_Cl_logtAGE,8.22015,2.22e-16
+beta_Cl_logtAnionGap,1.36779,0.171
+beta_Cl_logtBUN,4.69708,2.64e-06
+beta_Cl_logtCreatinine,7.99063,1.33e-15
+beta_Cl_logtHCO3,1.55262,0.121
+beta_Cl_logtHCT,2.73676,0.0062
+beta_Cl_logtHb,4.23675,2.27e-05
+beta_Cl_logtK,3.04389,0.00234
+beta_Cl_logtP,2.35141,0.0187
+beta_Cl_SEX_1,6.27507,3.49e-10

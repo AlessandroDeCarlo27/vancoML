@@ -1,0 +1,11 @@
+parameter,covariate,statistics,p-value,test
+V,beta_V_logtHb,7.70351,3.18311e-14,t-Test
+V,beta_V_logtWT,14.5387,<2.2e-16,t-Test
+Cl,beta_Cl_SEX_1,10.1969,<2.2e-16,t-Test
+Cl,beta_Cl_logtAGE,-12.7361,<2.2e-16,t-Test
+Cl,beta_Cl_logtBUN,-7.6206,5.88643e-14,t-Test
+Cl,beta_Cl_logtCreatinine,-12.5713,<2.2e-16,t-Test
+Cl,beta_Cl_logtHCO3,3.78625,0.000162122,t-Test
+Cl,beta_Cl_logtHCT,7.41052,2.68948e-13,t-Test
+Cl,beta_Cl_logtK,3.92015,9.45737e-05,t-Test
+Cl,beta_Cl_logtP,-4.09232,4.61779e-05,t-Test

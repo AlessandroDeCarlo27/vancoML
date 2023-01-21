@@ -1,0 +1,90 @@
+<DATAFILE>
+
+[FILEINFO]
+file='../../../../../../data/PKPDmodel/dataset_mx_crclWT_min_doseWT.csv'
+delimiter = comma
+header = {C, ID, TIME, Y, MDV, EVID, AMT, RATE, AnionGap, BUN, Ca, Chloride, Creatinine, Glucose, HCO3, HCT, Hb, P, PLT, K, Na, WBC, LacticAcid, HR, Temperature, AGE, SEX, WT, CrCl, CrBin}
+
+[CONTENT]
+ID = {use=identifier}
+TIME = {use=time}
+Y = {use=observation, name=Y, type=continuous}
+MDV = {use=missingdependentvariable}
+EVID = {use=eventidentifier}
+AMT = {use=amount}
+RATE = {use=rate}
+AGE = {use=regressor}
+SEX = {use=covariate, type=categorical}
+WT = {use=covariate, type=continuous}
+CrCl = {use=regressor}
+CrBin = {use=regressor}
+
+[FILTER]
+dataset_mx_crclWT_min_doseWT_filtered = {origin='../../../../../../data/PKPDmodel/dataset_mx_crclWT_min_doseWT.csv', filter={{removeIds='WT==1'}}}
+
+[APPLICATION]
+computation=dataset_mx_crclWT_min_doseWT_filtered
+
+<MODEL>
+
+[POPULATION]
+DEFINITION:
+Vpop_pop = {distribution=normal, typical=0.82, sd=0.164}
+omega_V = {distribution=normal, typical=0.2283, sd=52}
+Clpop_pop = {distribution=normal, typical=0.67, sd=0.128}
+thetaAge_pop = {distribution=normal, typical=-0.24, sd=0.048}
+thetaCr_pop = {distribution=normal, typical=2.49, sd=0.498}
+omega_Cl = {distribution=normal, typical=0.3013, sd=52}
+
+[COVARIATE]
+input = {WT, SEX}
+
+SEX = {type=categorical, categories={0, 1}}
+
+[INDIVIDUAL]
+input = {Cl_pop, omega_Cl, V_pop, omega_V, Clpop_pop, Vpop_pop, thetaAge_pop, thetaCr_pop}
+
+DEFINITION:
+Cl = {distribution=normal, typical=Cl_pop, sd=omega_Cl}
+V = {distribution=normal, typical=V_pop, sd=omega_V}
+Clpop = {distribution=normal, typical=Clpop_pop, no-variability}
+Vpop = {distribution=normal, typical=Vpop_pop, no-variability}
+thetaAge = {distribution=normal, typical=thetaAge_pop, no-variability}
+thetaCr = {distribution=normal, typical=thetaCr_pop, no-variability}
+
+[LONGITUDINAL]
+input = {a}
+
+file = '../../../prova_rev.txt'
+
+DEFINITION:
+Y = {distribution=normal, prediction=Cc, errorModel=constant(a)}
+
+<FIT>
+data = Y
+model = Y
+
+<PARAMETER>
+Cl_pop = {value=0, method=FIXED}
+Clpop_pop = {value=0.67, method=MAP}
+V_pop = {value=0, method=FIXED}
+Vpop_pop = {value=0.82, method=MAP}
+a = {value=1, method=MLE}
+omega_Cl = {value=0.3013, method=MAP}
+omega_V = {value=0.2283, method=MAP}
+thetaAge_pop = {value=-0.24, method=MAP}
+thetaCr_pop = {value=2.49, method=MAP}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(method = StochasticApproximation)
+logLikelihood(method = ImportanceSampling)
+plotResult(method = {indfits, parameterdistribution, covariancemodeldiagnosis, covariatemodeldiagnosis, obspred, vpc, residualsscatter, residualsdistribution, randomeffects, saemresults })
+
+[SETTINGS]
+GLOBAL:
+exportpath = '../'
+
