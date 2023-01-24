@@ -11,6 +11,44 @@ library(ggpubr)
 library(grid)
 library(ramify)
 
+######################### functions #######################################
+
+ind_plot <- function(id_i,name_mod,data.fit,obs,ll.df,params.df){
+    
+    colori = c("Dati"="blue","Ipred" = "purple")
+    datas <- data.fit %>% filter(ID==id_i) # replace pred.model2 with input name of the fcn
+    datas.obs <- obs%>% filter(ID==id_i)
+    ll <- (ll.df %>% filter(id==id_i))$importanceSampling # replace model2 with the input name of the fcn
+    cl <-(params.df %>% filter(id==id_i))$Cl_mode
+    v <-(params.df %>% filter(id==id_i))$V_mode
+    
+    p <- ggplot(data=datas,aes(x=time)) + geom_line(aes(y=indivPredMode,color="Ipred"),size=2) +
+        geom_point(data=datas.obs,aes(x=time, y=Y,color="Dati"),size=3)+scale_color_manual(values=colori)+
+        theme(text= element_text(size=15),
+              plot.title =  element_text(hjust = 0.5),
+              panel.background = element_rect(fill = "#f9f9f9"
+                                              ,colour = "#f9f9f9",
+                                              size = 0.5, 
+                                              linetype = "solid"),
+              panel.grid.major = element_line(size = 0.5, 
+                                              linetype = 'solid',
+                                              colour = "gray"), 
+              panel.grid.minor = element_line(size = 0.25, 
+                                              linetype = 'solid',
+                                              colour = "gray"),
+              legend.position = "none") +
+        labs(title = paste("ID",as.character(id_i),"-",name_mod,"- -2LL:",as.character(round(ll,3)),
+                           "CL:",as.character(round(cl,3)),
+                           "-", "V:",as.character(round(v,3)),
+                           sep=" "), x="",y="",color="Legend")
+    
+    return(p)
+    
+}
+
+
+
+
 ######### LOAD DATA SOURCES #############################################
 
 model2 <- read.csv("1cmt_V_wt_CL_age_cr_sex_prop/vanco_1cmt_V_wt_CL_age_cr_sex_prop/LogLikelihood/individualLL.txt")
@@ -40,8 +78,12 @@ fontsz.grid <- theme(text= element_text(size=22),
 
 mod_names <-  c("Model2","FFC","Roberts","Base","Revilla")
 
-m_ll <- as.matrix(cbind(model2$importanceSampling,ffc$importanceSampling,roberts$importanceSampling,base$importanceSampling,
+
+m_ll <- as.matrix(cbind(model2$importanceSampling,ffc$importanceSampling,
+                        roberts$importanceSampling,
+                        base$importanceSampling,
                         revilla$importanceSampling))
+
 
 colnames(m_ll) <- mod_names
 amins <- argmin(m_ll,rows = T)
@@ -61,3 +103,74 @@ for (i in 1:nrow(m_ll)) {
     scores <- c(scores,m_ll[i,amins[i]])
     labs_best <- c(labs_best,mod_names[amins[i]])
 }
+
+######################### load data for plots ################################
+
+
+
+obs <- read.csv("1cmt_fullCovs_NO_LAcl_HCTv_SEXv_AGcl_prop/vanco_1cmt_fullCovs_NO_LAcl_HCTv_SEXv_AGcl_prop/ChartsData/IndividualFits/Y_observations.txt")
+pred.model2 <- read.table("1cmt_V_wt_CL_age_cr_sex_prop/vanco_1cmt_V_wt_CL_age_cr_sex_prop/ChartsData/IndividualFits/Y_fits.txt",sep = ",", comment.char = "", header = T)
+pred.ffc  <- read.csv("1cmt_fullCovs_NO_LAcl_HCTv_SEXv_AGcl_prop/vanco_1cmt_fullCovs_NO_LAcl_HCTv_SEXv_AGcl_prop/ChartsData/IndividualFits/Y_fits.txt")
+pred.roberts <- read.csv("0_Literature_Models/Roberts/Roberts_add_originalCV/roberts_add_originalCV/ChartsData/IndividualFits/Y_fits.txt")
+pred.base <- read.csv("1cmt_noCovs_prop/vanco_1cmt_noCovs_prop/ChartsData/IndividualFits/Y_fits.txt")
+pred.revilla <- read.csv("0_Literature_Models/Revilla/Revilla/revilla/ChartsData/IndividualFits/Y_fits.txt")
+
+
+
+model2.params <- read.csv("1cmt_V_wt_CL_age_cr_sex_prop/vanco_1cmt_V_wt_CL_age_cr_sex_prop/IndividualParameters/estimatedIndividualParameters.txt")
+ffc.params <- read.csv("1cmt_fullCovs_NO_LAcl_HCTv_SEXv_AGcl_prop/vanco_1cmt_fullCovs_NO_LAcl_HCTv_SEXv_AGcl_prop/IndividualParameters/estimatedIndividualParameters.txt")
+roberts.params <- read.csv("0_Literature_Models/Roberts/Roberts_add_originalCV/roberts_add_originalCV/IndividualParameters/estimatedIndividualParameters.txt")
+base.params <- read.csv("1cmt_noCovs_prop/vanco_1cmt_noCovs_prop/IndividualParameters/estimatedIndividualParameters.txt")
+revilla.params.raw <- read.csv("0_Literature_Models/Revilla/Revilla/revilla/IndividualParameters/estimatedIndividualParameters.txt") 
+revilla.dataset <- read.csv("../data/PKPDmodel/dataset_mx_crclWT_min_doseWT.csv") %>% filter(WT>1)
+
+
+covs_i <- revilla.dataset %>% group_by(ID) %>% slice(1:1)
+cli <- (((revilla.params.raw$Clpop_SAEM*covs_i$CrCl)+covs_i$AGE^(revilla.params.raw$thetaAge_SAEM))*exp(revilla.params.raw$Cl_mode))*60*covs_i$WT/1000
+vi <- ((revilla.params.raw$Vpop_SAEM*revilla.params.raw$thetaCr_SAEM^(covs_i$CrBin))*exp(revilla.params.raw$V_mode))*covs_i$WT
+
+
+
+
+
+revilla.params <- data.frame(id=base.params$id,
+                             V_mode=vi,
+                             Cl_mode = cli
+                             )
+
+
+
+################################ make individual plots #######################
+
+IDs <- unique(model2.params$id)
+
+for (i in 1:length(IDs)) {
+    id_i <- IDs[i]
+    subj_plots <- list(
+                ind_plot(id_i,"Model2",pred.model2,obs,model2,model2.params),
+                ind_plot(id_i,"FFC",pred.ffc,obs,ffc,ffc.params),
+                ind_plot(id_i,"Roberts",pred.roberts,obs,roberts,roberts.params),
+                ind_plot(id_i,"Base",pred.base,obs,base,base.params),
+                ind_plot(id_i,"Revilla",pred.revilla,obs,revilla,revilla.params)
+    )
+    
+    subj_plots[[amins[i]]]$theme$text$face <- "bold"
+    
+    sb <- ggarrange(plotlist = subj_plots,ncol = 2,nrow = 3)
+    
+    png(filename = paste0("Individual_fittings/ID_",as.numeric(id_i),".png"),width =850 ,height =1400 )
+    print(sb)
+    dev.off()
+    
+}
+
+
+
+
+
+
+
+
+
+
+
