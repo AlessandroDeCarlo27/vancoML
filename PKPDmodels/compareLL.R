@@ -10,21 +10,23 @@ library(corrplot)#plot of matrices
 library(ggpubr)
 library(grid)
 library(ramify)
-
+library(pracma)
 ######################### functions #######################################
 
-ind_plot <- function(id_i,name_mod,data.fit,obs,ll.df,params.df){
+ind_plot <- function(id_i,name_mod,data.fit,obs,ll.df,params.df,auc){
     
     colori = c("Dati"="blue","Ipred" = "purple")
     datas <- data.fit %>% filter(ID==id_i) # replace pred.model2 with input name of the fcn
     datas.obs <- obs%>% filter(ID==id_i)
-    ll <- (ll.df %>% filter(id==id_i))$importanceSampling # replace model2 with the input name of the fcn
+    ll <- (ll.df %>% filter(ID==id_i))[,name_mod] # replace model2 with the input name of the fcn
+    auc_i <- (auc %>% filter(ID==id_i))$auc
+    
     cl <-(params.df %>% filter(id==id_i))$Cl_mode
     v <-(params.df %>% filter(id==id_i))$V_mode
     
     p <- ggplot(data=datas,aes(x=time)) + geom_line(aes(y=indivPredMode,color="Ipred"),size=2) +
         geom_point(data=datas.obs,aes(x=time, y=Y,color="Dati"),size=3)+scale_color_manual(values=colori)+
-        theme(text= element_text(size=15),
+        theme(text= element_text(size=13),
               plot.title =  element_text(hjust = 0.5),
               panel.background = element_rect(fill = "#f9f9f9"
                                               ,colour = "#f9f9f9",
@@ -40,14 +42,12 @@ ind_plot <- function(id_i,name_mod,data.fit,obs,ll.df,params.df){
         labs(title = paste("ID",as.character(id_i),"-",name_mod,"- -2LL:",as.character(round(ll,3)),
                            "CL:",as.character(round(cl,3)),
                            "-", "V:",as.character(round(v,3)),
+                           "-", "AUC", as.character(round(auc_i,2)),
                            sep=" "), x="",y="",color="Legend")
     
     return(p)
     
 }
-
-
-
 
 ######### LOAD DATA SOURCES #############################################
 
@@ -84,9 +84,11 @@ m_ll <- as.matrix(cbind(model2$importanceSampling,ffc$importanceSampling,
                         base$importanceSampling,
                         revilla$importanceSampling))
 
+w_mll <- exp(-0.5*m_ll) / rowSums(exp(-0.5*m_ll))
 
-colnames(m_ll) <- mod_names
-amins <- argmin(m_ll,rows = T)
+
+colnames(w_mll) <- mod_names
+amins <- argmax(w_mll,rows = T)
 
 amins_names <- data.frame(BestModel = as.factor(mod_names[amins]))
 
@@ -99,8 +101,8 @@ plot(p)
 ################## likelihood of the mixture model ###########################
 scores <- c()
 labs_best <- c()
-for (i in 1:nrow(m_ll)) {
-    scores <- c(scores,m_ll[i,amins[i]])
+for (i in 1:nrow(w_mll)) {
+    scores <- c(scores,w_mll[i,amins[i]])
     labs_best <- c(labs_best,mod_names[amins[i]])
 }
 
@@ -114,6 +116,17 @@ pred.ffc  <- read.csv("1cmt_fullCovs_NO_LAcl_HCTv_SEXv_AGcl_prop/vanco_1cmt_full
 pred.roberts <- read.csv("0_Literature_Models/Roberts/Roberts_add_originalCV/roberts_add_originalCV/ChartsData/IndividualFits/Y_fits.txt")
 pred.base <- read.csv("1cmt_noCovs_prop/vanco_1cmt_noCovs_prop/ChartsData/IndividualFits/Y_fits.txt")
 pred.revilla <- read.csv("0_Literature_Models/Revilla/Revilla/revilla/ChartsData/IndividualFits/Y_fits.txt")
+
+
+
+auc.model2 <- as.data.frame(pred.model2 %>% group_by(ID) %>% summarise(auc=trapz(time,indivPredMode)))
+auc.ffc <- as.data.frame(pred.ffc %>% group_by(ID) %>% summarise(auc=trapz(time,indivPredMode)))
+auc.roberts <- as.data.frame(pred.roberts %>% group_by(ID) %>% summarise(auc=trapz(time,indivPredMode)))
+auc.base <- as.data.frame(pred.base %>% group_by(ID) %>% summarise(auc=trapz(time,indivPredMode)))
+auc.revilla <-as.data.frame(pred.revilla %>% group_by(ID) %>% summarise(auc=trapz(time,indivPredMode)))
+
+
+
 
 
 
@@ -144,33 +157,87 @@ revilla.params <- data.frame(id=base.params$id,
 
 IDs <- unique(model2.params$id)
 
+
+ll_df <- cbind(data.frame(ID=IDs),as.data.frame(w_mll))
+
+auc_mat  <- cbind(auc.model2$auc,auc.ffc$auc,auc.roberts$auc,auc.base$auc,auc.revilla$auc)
+
+delta_auc_ffc <- c()
+
 for (i in 1:length(IDs)) {
     id_i <- IDs[i]
     subj_plots <- list(
-                ind_plot(id_i,"Model2",pred.model2,obs,model2,model2.params),
-                ind_plot(id_i,"FFC",pred.ffc,obs,ffc,ffc.params),
-                ind_plot(id_i,"Roberts",pred.roberts,obs,roberts,roberts.params),
-                ind_plot(id_i,"Base",pred.base,obs,base,base.params),
-                ind_plot(id_i,"Revilla",pred.revilla,obs,revilla,revilla.params)
+                ind_plot(id_i,"Model2",pred.model2,obs,ll_df,model2.params,auc.model2),
+                ind_plot(id_i,"FFC",pred.ffc,obs,ll_df,ffc.params,auc.ffc),
+                ind_plot(id_i,"Roberts",pred.roberts,obs,ll_df,roberts.params,auc.roberts),
+                ind_plot(id_i,"Base",pred.base,obs,ll_df,base.params,auc.base),
+                ind_plot(id_i,"Revilla",pred.revilla,obs,ll_df,revilla.params,auc.revilla)
     )
     
     subj_plots[[amins[i]]]$theme$text$face <- "bold"
     
     sb <- ggarrange(plotlist = subj_plots,ncol = 2,nrow = 3)
     
-    png(filename = paste0("Individual_fittings/ID_",as.numeric(id_i),".png"),width =850 ,height =1400 )
+    delta_auc_ffc <- c(delta_auc_ffc,(auc_mat[i,2]-auc_mat[i,amins[i]])/auc_mat[i,2])
+    
+    png(filename = paste0("Individual_fittings/ID_",as.numeric(id_i),".png"),width =1024 ,height =1400 )
     print(sb)
     dev.off()
     
 }
 
 
+####################  delta aucs with respect to FFC ########################
+
+
+delta_auc_df <- data.frame(ID=base.params$id,
+                           DeltaAucRelFFC = delta_auc_ffc,
+                           BestModel = amins_names$BestModel) %>% filter(BestModel!="FFC")
+
+
+p<-ggplot(data=delta_auc_df) + 
+    geom_boxplot(aes(x=DeltaAucRelFFC,fill=BestModel),alpha=.5,colour="black",
+                 size=.8,outlier.size = 3) + fontsz.grid
 
 
 
+print(p)
+
+delta_auc_df %>% group_by(BestModel) %>% summarise(median=median(DeltaAucRelFFC),
+                                                   Q1=quantile(DeltaAucRelFFC,0.25),
+                                                   Q2=quantile(DeltaAucRelFFC,0.75),
+                                                   low=quantile(DeltaAucRelFFC,0.025),
+                                                   up= quantile(DeltaAucRelFFC,0.975),
+                                                   .groups="drop"
+                                                   )
+                                                
+########### statistical tests ############################################                                                
+delta_auc_uf_df <- data.frame(ID=base.params$id,
+                           DeltaAucRelFFC = delta_auc_ffc,
+                           BestModel = amins_names$BestModel)    
+
+auc.base_best <- auc.base[delta_auc_uf_df$BestModel=="Base",c("ID","auc")]
+auc.ffc_base <- auc.ffc[delta_auc_uf_df$BestModel=="Base",c("ID","auc")]
 
 
+wilcox.test(auc.base_best$auc,auc.ffc_base$auc,paired = TRUE,alternative = "two.sided")
 
 
+auc.model2_best <- auc.model2[delta_auc_uf_df$BestModel=="Model2",c("ID","auc")]
+auc.ffc_model2 <- auc.ffc[delta_auc_uf_df$BestModel=="Model2",c("ID","auc")]
 
 
+wilcox.test(auc.model2_best$auc,auc.ffc_model2$auc,paired = TRUE,alternative = "two.sided")
+
+auc.revilla_best <- auc.revilla[delta_auc_uf_df$BestModel=="Revilla",c("ID","auc")]
+auc.ffc_revilla<- auc.ffc[delta_auc_uf_df$BestModel=="Revilla",c("ID","auc")]
+
+
+wilcox.test(auc.revilla_best$auc,auc.ffc_revilla$auc,paired = TRUE,alternative = "two.sided")
+
+
+auc.roberts_best <- auc.roberts[delta_auc_uf_df$BestModel=="Roberts",c("ID","auc")]
+auc.ffc_roberts<- auc.ffc[delta_auc_uf_df$BestModel=="Roberts",c("ID","auc")]
+
+
+wilcox.test(auc.roberts_best$auc,auc.ffc_roberts$auc,paired = TRUE,alternative = "two.sided")
